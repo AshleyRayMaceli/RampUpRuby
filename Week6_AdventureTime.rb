@@ -1,4 +1,4 @@
-class Player
+	class Player
 	attr_reader :name
 	attr_accessor :health, :strength
 	
@@ -20,28 +20,40 @@ class AdventureTime
 	end
 
 	def start_game
+		puts ""
 		puts "=============================="
 		puts "Welcome #{self.player.name}! Your journey begins now!"
 		puts "Your starting stats:"
 		puts "HP: #{self.player.health}"
 		puts "Strength: #{self.player.strength}"
 		puts "=============================="
+		puts ""
 		enter_room
 	end
 
 	def enter_room
-		while rooms >= 0 do
+		while rooms > 0 do
 		puts "Choose between door 1 and 2"
 		user_input = gets.chomp.to_i
 		if user_input == 1
 			random_scenario
-		elsif user_input == 2
+		else user_input == 2
 			random_scenario
-		else
-			puts "You have reached the end of your journey."
+		end
+		end
+
+		case rooms
+		when rooms = 0
+			puts ""
+			puts "=============================="
+			puts "You have reached the end of your journey. You have become wiser and stronger, #{self.player.name}."
+			puts "Your final stats:"
+			puts "HP: #{self.player.health}"
+			puts "Strength: #{self.player.strength}"
+			puts "=============================="
+			puts ""
 			return false
 		end
-	end
 	end
 
 	def random_scenario
@@ -58,6 +70,8 @@ class AdventureTime
 	end
 
 	def fists_or_sword
+		puts "You want to attack! Use your fists [1] or your sword [2]"
+		attack_choice = gets.chomp.to_i
 		if attack_choice == 1
 			self.player.strength += rand(30..60)
 			self.player.health -= rand(5..15)
@@ -66,13 +80,15 @@ class AdventureTime
 			puts "Strength: #{self.player.strength}"
 		end
 		if attack_choice == 2
-			puts "test"
+			self.player.strength += rand(50..100)
+			puts "You unleashed your sword and slayed the monster! Your strength has increased!"
+			puts "Strength: #{self.player.strength}"
 		end	
 	end
 
 	def medicine
 	self.player.health += rand(50..100)
-	puts "You picked up an elixer potion! Your total HP is now #{self.player.health} points!"
+	puts "You picked up an elixir potion! Your total HP is now #{self.player.health} points!"
 	self.rooms -= 1
 	end
 
@@ -80,12 +96,10 @@ class AdventureTime
 	puts "There is an enemy in here! You need to fight! Would you like to do? Attack (1) or defend (2)?"
 	attack_or_defend = gets.chomp.to_i
 		if attack_or_defend == 1
-			puts "You want to attack! Use your fists [1] or your sword [2]"
-			attack_choice = gets.chomp.to_i
 			fists_or_sword
 		end
 		if attack_or_defend == 2
-			self.player.health -= 10
+			self.player.health -= rand(10..20)
 			puts "You chose to defend! It only hurt you a little (HP: #{self.player.health}). You escaped safely."
 		end
 		self.rooms -= 1
